@@ -1,0 +1,118 @@
+create schema raju;
+use raju;
+
+create table Departments(
+dept_id	int primary key,
+dept_name varchar(77)
+);
+
+create table Students(
+student_id int primary key,
+student_name varchar (67),
+age	int,
+gender	varchar(77),
+dept_id int ,
+foreign key(dept_id) references Departments(dept_id)
+);
+
+create table Courses(
+course_id	int primary key,
+course_name	varchar(33),
+dept_id int,
+foreign key(dept_id) references Departments(dept_id)
+);
+
+create table Marks(
+mark_id int  primary key,
+student_id	int,
+course_id int,
+marks int,
+foreign key(student_id) references Students(student_id),
+foreign key(course_id) references Courses(course_id)
+);
+ 
+ insert into Departments values 
+(10, 'Computer Science'),
+(20, 'Electronics'),
+(30, 'Mechanical'),
+(40, 'Civil');
+
+ insert into Students values 
+(1  ,'Arun ', 21,'Male', 10),
+(2	,'Priya', 20,'Female', 20),
+(3	,'Kavin', 22,'Male',  10),
+(4	,'Divya', 21,'Female', 30),
+(5	,'Rahul', 23,'Male', 20),
+(6	,'Sneha', 20,'Female', 10),
+(7	,'Ajay' , 22,'Male', 30),
+(8	,'Meena',21	,'Female', 20),
+(9	,'Anitha',24,'Female',40);
+ 
+ insert into  Courses values 
+(101,	'Python',	10),
+(102,	'SQL',   10),
+(103,	'Java',   20),
+(104,	'Electronics',	20),
+(105,	'Thermodynamics',	30);
+
+ insert into   Marks values 
+(1,	1,	101,85),
+(2,1,	102	,90),
+(3,	2,	103	,72),
+(4,	2,	104	,78),
+(5,	3,	101	,91),
+(6,	3,	102	,88),
+(7,	4,	105	,65),
+(8,	5,	103	,82),
+(9,	5,	104	,76),
+(10,6,	101	,95),
+(11	,6,	102	,92),
+(12	,7, 105	,70),
+(13	,8, 103	,89),
+(14	,8, 104	,94);
+
+-- Create a database named college_db.
+select * from students;
+-- Create the Departments table with dept_id as the Primary Key.
+select * from students where age>21;
+-- Insert 4 departments into the Departments table.
+select max(marks) from marks;
+select s.student_name,d.dept_name from students s inner join departments d on s.dept_id = d.dept_id;
+-- Create the Students table with a Foreign Key connecting it to Departments.
+select student_name from students  order by student_name asc;
+-- Insert 8 students into the Students table
+select count(*) from students;
+select student_name,gender  from students  where gender= 'female';
+-- Create the Courses table with course_id as the Primary Key. 
+select student_id,avg(marks) from marks group by student_id; 
+-- Insert 5 courses into the Courses table.
+select student_id,max(marks) from marks where   marks > 80 group by student_id; 
+select d.dept_name,count(s.student_id) from students s  inner join departments d on s.dept_id = d.dept_id group by d.dept_name having count(s.student_id) >2;
+-- Create the Marks table with mark_id as the Primary Key.
+select s.student_name,m.marks from students s inner join marks m on s.student_id = m.student_id ;
+update students set age = 98 where student_id=2;
+select min(marks) from marks ;
+select s.student_name,m.marks from students s inner join marks m on s.student_id = m.student_id where marks between 60 and 90 ;
+select d.dept_name,count(s.student_id) from students s  inner join departments d on s.dept_id = d.dept_id group by d.dept_name having count(s.student_id) > 0;
+select * from courses;
+-- Insert marks for all students.
+select sum(marks) from marks;
+select marks from marks order by marks desc;
+select c.course_name ,max(m.marks )from  courses c  inner join marks m on c.course_id = m.course_id group by c.course_name having max(m.marks);
+select dept_name from departments;
+select c.course_name ,avg(m.marks )from  courses c  inner join marks m on c.course_id = m.course_id group by c.course_name having avg(m.marks)>75;
+select s.student_name,c.course_name,m.marks from students s inner join marks m on s.student_id = m.student_id inner join courses c on m.course_id = c.course_id;
+update marks set marks = 98 where student_id=2;
+select s.student_name,avg(m.marks) from students s inner join marks m on s.student_id = m.student_id group by  s.student_name;
+select distinct dept_id from students;
+select s.student_name ,sum(m.marks )from  students s  inner join marks m on s.student_id = m.student_id group by s.student_name having sum(m.marks)>100;
+select * from students where dept_id=10;
+select c.course_name ,min(m.marks )from  courses c  inner join marks m on c.course_id = m.course_id group by c.course_name having min(m.marks);
+select s.student_name ,sum(m.marks )from  students s  inner join marks m on s.student_id = m.student_id group by s.student_name having sum(m.marks);
+select student_name ,age,gender from students;
+delete from students where student_id not in(select student_id from marks);
+select * from students order by age desc; 
+select sum(marks) from marks; 
+select s.student_name,m.marks from students s inner join marks m   on s.student_id = m.student_id inner join departments d on s.dept_id =d.dept_id where d.dept_name='Computer Science' and m.marks > 80;
+select s.student_name,m.marks from students s left join marks m on s.student_id = m.student_id;
+select s.student_name ,d.dept_name,m.marks from students s inner join departments d on s.dept_id =d.dept_id inner join marks m on  s.student_id = m.student_id order by m.marks desc;
